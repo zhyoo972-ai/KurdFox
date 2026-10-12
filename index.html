@@ -1,0 +1,4848 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KurdFox | فیلم و زنجیرە</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+    background:radial-gradient(circle at 20% 0%,#35070d 0%,#09090b 42%),#09090b;
+    color:#fff;
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+    overflow-x:hidden;
+    min-height:100vh
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+
+:root{
+    --red:#e50914;
+    --red2:#ff2631;
+    --dark:#08080a;
+    --card:rgba(255,255,255,.055);
+    --border:rgba(255,255,255,.13);
+    --muted:#a9a9b3
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(18px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes zoom{
+    from{transform:scale(1.08)}
+    to{transform:scale(1)}
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+@keyframes searchGlow{
+    0%,100%{
+        box-shadow:
+        0 15px 60px rgba(229,9,20,.15),
+        0 0 0 rgba(229,9,20,0)
+    }
+
+    50%{
+        box-shadow:
+        0 15px 70px rgba(229,9,20,.25),
+        0 0 35px rgba(229,9,20,.08)
+    }
+}
+
+@keyframes pulse{
+    0%,100%{
+        box-shadow:0 0 0 0 rgba(229,9,20,.25)
+    }
+
+    50%{
+        box-shadow:0 0 0 10px rgba(229,9,20,0)
+    }
+}
+
+
+/* LOADER */
+
+#loader{
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:9999;
+    display:grid;
+    place-items:center;
+    transition:.5s
+}
+
+.loader-logo{
+    font-size:42px;
+    font-weight:900;
+    text-align:center;
+    margin-bottom:20px
+}
+
+.loader-logo b,
+.logo b{
+    color:var(--red)
+}
+
+.spinner{
+    width:52px;
+    height:52px;
+    border:4px solid #333;
+    border-top-color:var(--red);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:auto
+}
+
+
+/* NAVBAR */
+
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:70px;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:0 4%;
+    background:rgba(7,7,9,.78);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border)
+}
+
+.logo{
+    font-size:25px;
+    font-weight:900;
+    cursor:pointer;
+    white-space:nowrap
+}
+
+#links{
+    display:flex;
+    gap:5px;
+    flex:1;
+    align-items:center
+}
+
+#links a{
+    color:var(--muted);
+    padding:9px 13px;
+    border-radius:22px;
+    transition:.2s;
+    cursor:pointer;
+    white-space:nowrap
+}
+
+#links a:hover,
+#links a.active{
+    color:#fff;
+    background:rgba(255,255,255,.07)
+}
+
+#links a.active{
+    box-shadow:inset 0 -2px var(--red)
+}
+
+.nav-button{
+    background:none;
+    border:0;
+    color:#aaa;
+    padding:9px 13px;
+    border-radius:22px
+}
+
+.nav-button:hover{
+    background:rgba(255,255,255,.07);
+    color:#fff
+}
+
+.avatar{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--red),#ff7759);
+    font-weight:800
+}
+
+#hamburger{
+    display:none;
+    background:none;
+    border:0;
+    color:#fff;
+    font-size:25px
+}
+
+
+/* MAIN */
+
+main{
+    padding-top:70px;
+    min-height:80vh;
+    animation:fade .45s
+}
+
+
+/* HERO */
+
+.hero{
+    min-height:760px;
+    position:relative;
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:flex-end;
+    padding:0 5% 80px;
+    overflow:hidden;
+    animation:zoom 1.2s
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(
+        90deg,
+        #070709 5%,
+        rgba(7,7,9,.65) 42%,
+        rgba(7,7,9,.12) 80%
+    ),
+    linear-gradient(
+        0deg,
+        #09090b 0%,
+        transparent 50%
+    )
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    max-width:620px
+}
+
+.hero-content h1{
+    font-family:Georgia,serif;
+    font-size:clamp(40px,6vw,70px);
+    line-height:1.05;
+    margin:12px 0
+}
+
+.hero-content p{
+    color:#ddd;
+    line-height:1.9
+}
+
+.badge{
+    display:inline-block;
+    background:var(--red);
+    padding:5px 14px;
+    border-radius:20px;
+    font-size:12px
+}
+
+
+/* BIG SEARCH */
+
+.big-search{
+    position:absolute;
+    z-index:10;
+    top:55px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(760px,90%)
+}
+
+/* SEARCH LABEL REMOVED */
+
+.search-box{
+    height:72px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:8px 10px 8px 22px;
+    background:rgba(15,15,20,.67);
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:40px;
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    animation:searchGlow 3s infinite
+}
+
+.search-icon{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:var(--red);
+    font-size:21px;
+    flex-shrink:0
+}
+
+.search-box input{
+    flex:1;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#fff;
+    font-size:18px;
+    min-width:0
+}
+
+.search-box input::placeholder{
+    color:#aaa
+}
+
+.search-button{
+    height:54px;
+    padding:0 25px;
+    border:0;
+    border-radius:30px;
+    background:var(--red);
+    color:#fff;
+    font-weight:800;
+    transition:.2s
+}
+
+.search-button:hover{
+    background:var(--red2);
+    transform:scale(1.03)
+}
+
+
+/* SEARCH RESULTS */
+
+.search-results{
+    margin-top:10px;
+    background:rgba(12,12,16,.96);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:10px;
+    display:none;
+    max-height:400px;
+    overflow-y:auto;
+    backdrop-filter:blur(20px)
+}
+
+.search-results.show{
+    display:block
+}
+
+.search-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px;
+    border-radius:15px;
+    cursor:pointer
+}
+
+.search-item:hover{
+    background:rgba(255,255,255,.07)
+}
+
+.search-item img{
+    width:48px;
+    height:68px;
+    object-fit:cover;
+    border-radius:9px
+}
+
+.search-item-info{
+    flex:1
+}
+
+.search-item-info b{
+    display:block;
+    margin-bottom:5px
+}
+
+.muted{
+    color:var(--muted);
+    font-size:13px
+}
+
+
+/* BUTTONS */
+
+.buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px
+}
+
+.btn{
+    border:0;
+    border-radius:30px;
+    padding:12px 23px;
+    background:var(--red);
+    color:#fff;
+    font-weight:800;
+    transition:.2s
+}
+
+.btn:hover{
+    background:var(--red2);
+    transform:translateY(-2px)
+}
+
+.btn.secondary{
+    background:rgba(255,255,255,.07);
+    border:1px solid var(--border)
+}
+
+.btn.secondary:hover{
+    background:rgba(255,255,255,.13)
+}
+
+.btn.small{
+    width:100%;
+    padding:8px 12px;
+    margin-top:7px
+}
+
+
+/* SECTIONS */
+
+.section{
+    margin:38px 0
+}
+
+.section-title{
+    font-family:Georgia,serif;
+    font-size:25px;
+    margin:0 4% 16px
+}
+
+.row{
+    display:flex;
+    gap:16px;
+    overflow-x:auto;
+    padding:5px 4% 15px
+}
+
+.row::-webkit-scrollbar{
+    height:5px
+}
+
+.row::-webkit-scrollbar-thumb{
+    background:#444;
+    border-radius:10px
+}
+
+
+/* CARDS */
+
+.card{
+    flex:0 0 175px
+}
+
+.poster{
+    position:relative;
+    aspect-ratio:2/3;
+    overflow:hidden;
+    border-radius:15px;
+    background:#17171b;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    transition:.3s
+}
+
+.poster:hover{
+    transform:translateY(-7px) scale(1.02);
+    box-shadow:0 18px 40px rgba(229,9,20,.25)
+}
+
+.poster img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.4s
+}
+
+.poster:hover img{
+    transform:scale(1.08)
+}
+
+.quality{
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:rgba(0,0,0,.75);
+    border:1px solid var(--red);
+    padding:2px 8px;
+    border-radius:8px;
+    font-size:10px
+}
+
+.favorite{
+    position:absolute;
+    top:7px;
+    left:7px;
+    width:35px;
+    height:35px;
+    border:0;
+    border-radius:50%;
+    background:rgba(0,0,0,.7);
+    color:#fff;
+    font-size:17px
+}
+
+.favorite.active{
+    color:var(--red)
+}
+
+.card h4{
+    margin-top:8px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(175px,1fr));
+    gap:20px;
+    padding:0 4%
+}
+
+
+/* PAGE */
+
+.page-header{
+    padding:35px 4% 15px
+}
+
+.page-header h1{
+    font-family:Georgia,serif;
+    font-size:36px
+}
+
+
+/* FILTERS */
+
+.filters{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    padding:10px 4% 25px
+}
+
+.filters input,
+.filters select,
+.form input,
+.form textarea,
+.form select{
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--border);
+    color:#fff;
+    border-radius:12px;
+    padding:11px 14px;
+    outline:0
+}
+
+.filters select option,
+.form select option{
+    background:#111
+}
+
+.filters input:focus,
+.filters select:focus{
+    border-color:var(--red)
+}
+
+
+/* GLASS */
+
+.glass{
+    background:rgba(255,255,255,.055);
+    border:1px solid var(--border);
+    backdrop-filter:blur(18px);
+    border-radius:22px;
+    padding:25px
+}
+
+
+/* AUTH */
+
+.auth{
+    max-width:430px;
+    margin:60px auto
+}
+
+.form{
+    display:grid;
+    gap:12px
+}
+
+.form label{
+    color:var(--muted);
+    font-size:13px
+}
+
+.form input,
+.form textarea,
+.form select{
+    width:100%
+}
+
+.tabs{
+    display:flex;
+    gap:8px;
+    margin:20px 0
+}
+
+.tab{
+    flex:1;
+    text-align:center;
+    padding:10px;
+    border-radius:25px;
+    background:rgba(255,255,255,.05);
+    cursor:pointer
+}
+
+.tab.active{
+    background:var(--red)
+}
+
+
+/* DETAILS */
+
+.backdrop{
+    height:55vh;
+    min-height:350px;
+    background-size:cover;
+    background-position:center
+}
+
+.details{
+    display:flex;
+    gap:30px;
+    padding:0 5%;
+    margin-top:-150px;
+    position:relative;
+    flex-wrap:wrap
+}
+
+.details-poster{
+    width:230px;
+    aspect-ratio:2/3;
+    object-fit:cover;
+    border-radius:18px;
+    box-shadow:0 20px 50px #000
+}
+
+.details-info{
+    flex:1;
+    min-width:280px;
+    padding-top:80px
+}
+
+.details-info h1{
+    font-family:Georgia,serif;
+    font-size:clamp(30px,5vw,55px)
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:15px;
+    margin:20px 0
+}
+
+.info-grid b{
+    display:block;
+    color:var(--muted);
+    font-size:12px
+}
+
+
+/* VIDEO */
+
+.player{
+    margin:25px 4%;
+    background:#000;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(229,9,20,.12)
+}
+
+.player video{
+    width:100%;
+    max-height:72vh;
+    display:block
+}
+
+.player-controls{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px;
+    flex-wrap:wrap;
+    background:#050505
+}
+
+.player-controls button,
+.player-controls select{
+    background:rgba(255,255,255,.07);
+    border:1px solid var(--border);
+    color:#fff;
+    border-radius:10px;
+    padding:7px 12px
+}
+
+.player-controls input[type=range]{
+    accent-color:var(--red)
+}
+
+#seek{
+    flex:1
+}
+
+
+/* MODAL */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:500;
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:70px 4%;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(8px);
+    overflow:auto
+}
+
+.modal-overlay.show{
+    display:flex
+}
+
+.modal{
+    width:100%;
+    max-width:750px;
+    background:#121216;
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:25px
+}
+
+.modal video{
+    width:100%;
+    border-radius:12px
+}
+
+
+/* ADMIN */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:15px;
+    padding:0 4%
+}
+
+.stat{
+    text-align:center
+}
+
+.stat h2{
+    color:var(--red);
+    font-size:38px
+}
+
+.admin-tabs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    padding:25px 4%
+}
+
+.table-wrap{
+    overflow-x:auto;
+    padding:0 4%
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid var(--border);
+    text-align:right
+}
+
+table img{
+    width:40px;
+    height:55px;
+    object-fit:cover;
+    border-radius:6px;
+    vertical-align:middle
+}
+
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:70px 20px;
+    color:var(--muted)
+}
+
+.empty-icon{
+    font-size:55px;
+    margin-bottom:10px
+}
+
+
+/* TOAST */
+
+#toastBox{
+    position:fixed;
+    top:85px;
+    left:18px;
+    z-index:1000;
+    display:grid;
+    gap:8px
+}
+
+.toast{
+    background:rgba(25,25,30,.95);
+    border:1px solid var(--border);
+    border-right:4px solid var(--red);
+    padding:12px 18px;
+    border-radius:12px;
+    animation:fade .3s
+}
+
+
+/* FOOTER */
+
+footer{
+    margin-top:70px;
+    padding:45px 4% 30px;
+    text-align:center;
+    color:var(--muted);
+    background:rgba(0,0,0,.5);
+    border-top:1px solid var(--border)
+}
+
+.footer-links{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+    margin:15px 0
+}
+
+.footer-links span{
+    cursor:pointer
+}
+
+.social{
+    margin:15px 0
+}
+
+.social span{
+    display:inline-grid;
+    place-items:center;
+    width:38px;
+    height:38px;
+    border:1px solid var(--border);
+    border-radius:50%;
+    margin:4px;
+    cursor:pointer
+}
+
+.social span:hover{
+    background:var(--red);
+    color:#fff
+}
+
+
+/* TOP */
+
+#topBtn{
+    position:fixed;
+    left:18px;
+    bottom:25px;
+    width:45px;
+    height:45px;
+    border:0;
+    border-radius:50%;
+    background:var(--red);
+    color:#fff;
+    display:none;
+    z-index:80
+}
+
+
+/* MOBILE */
+
+#mobileNav{
+    display:none
+}
+
+@media(max-width:860px){
+
+    nav{
+        justify-content:space-between
+    }
+
+    #links{
+        display:none;
+        position:absolute;
+        top:70px;
+        left:0;
+        right:0;
+        flex-direction:column;
+        align-items:stretch;
+        background:rgba(8,8,10,.97);
+        padding:15px 4%
+    }
+
+    #links.open{
+        display:flex
+    }
+
+    #hamburger{
+        display:block
+    }
+
+    .hero{
+        min-height:700px;
+        padding-bottom:55px
+    }
+
+    .big-search{
+        top:35px;
+        width:92%
+    }
+
+    .search-box{
+        height:62px
+    }
+
+    .search-button{
+        padding:0 16px;
+        height:46px
+    }
+
+    .search-icon{
+        width:42px;
+        height:42px
+    }
+
+    .search-box input{
+        font-size:15px
+    }
+
+    .hero-content{
+        margin-top:120px
+    }
+
+    .grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:14px
+    }
+
+    .card{
+        min-width:0
+    }
+
+    .details{
+        margin-top:-80px
+    }
+
+    .details-poster{
+        width:145px
+    }
+
+    .details-info{
+        padding-top:0
+    }
+
+    #mobileNav{
+        position:fixed;
+        display:flex;
+        bottom:0;
+        left:0;
+        right:0;
+        z-index:150;
+        background:rgba(8,8,10,.93);
+        backdrop-filter:blur(18px);
+        border-top:1px solid var(--border);
+        justify-content:space-around;
+        padding:6px 0 8px
+    }
+
+    #mobileNav button{
+        background:none;
+        border:0;
+        color:var(--muted);
+        font-size:11px;
+        padding:5px 10px
+    }
+
+    #mobileNav button.active{
+        color:var(--red)
+    }
+
+    #mobileNav i{
+        display:block;
+        font-style:normal;
+        font-size:18px;
+        margin-bottom:2px
+    }
+
+    footer{
+        padding-bottom:100px
+    }
+
+    #topBtn{
+        bottom:80px
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+
+    <div>
+
+        <div class="loader-logo">
+            Kurd<b>Fox</b>
+        </div>
+
+        <div class="spinner"></div>
+
+    </div>
+
+</div>
+
+
+<nav>
+
+    <div class="logo" onclick="go('home')">
+        Kurd<b>Fox</b>
+    </div>
+
+    <div id="links"></div>
+
+    <!-- NAV SEARCH REMOVED -->
+
+    <button
+        id="hamburger"
+        onclick="toggleMenu()">
+
+        ☰
+
+    </button>
+
+</nav>
+
+
+<main id="app"></main>
+
+<div id="mobileNav"></div>
+
+
+<footer>
+
+    <div class="logo">
+        Kurd<b>Fox</b>
+    </div>
+
+    <div class="footer-links">
+
+        <span onclick="info('دەربارەی KurdFox')">
+            دەربارە
+        </span>
+
+        <span onclick="info('پەیوەندی')">
+            پەیوەندی
+        </span>
+
+        <span onclick="info('سیاسەتی تایبەتمەندی')">
+            سیاسەتی تایبەتمەندی
+        </span>
+
+        <span onclick="info('مەرجەکان')">
+            مەرجەکان
+        </span>
+
+    </div>
+
+    <div class="social">
+
+        <span onclick="toast('فەیسبووک - نموونە')">
+            f
+        </span>
+
+        <span onclick="toast('X - نموونە')">
+            X
+        </span>
+
+        <span onclick="toast('ئینستاگرام - نموونە')">
+            ◎
+        </span>
+
+        <span onclick="toast('یوتیوب - نموونە')">
+            ▶
+        </span>
+
+    </div>
+
+    <p>
+        © 2026 KurdFox — هەموو ناوەڕۆکەکان بۆ نموونەن.
+    </p>
+
+</footer>
+
+
+<div
+    class="modal-overlay"
+    id="modalOverlay"
+    onclick="outsideModal(event)">
+
+    <div
+        class="modal"
+        id="modalContent">
+    </div>
+
+</div>
+
+
+<div id="toastBox"></div>
+
+
+<button
+    id="topBtn"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})">
+
+    ↑
+
+</button>
+
+
+<script>
+
+/* STORAGE */
+
+const $=selector=>document.querySelector(selector);
+
+const storage={
+
+    get(key,fallback){
+
+        try{
+
+            return JSON.parse(
+                localStorage.getItem(key)
+            ) ?? fallback;
+
+        }catch(error){
+
+            return fallback;
+
+        }
+
+    },
+
+    set(key,value){
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(value)
+        );
+
+    }
+
+};
+
+
+/* DATA */
+
+const VIDEO=
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
+const TRAILER=
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+
+
+const genres=[
+
+    "Action",
+    "Adventure",
+    "Comedy",
+    "Drama",
+    "Horror",
+    "Sci-Fi",
+    "Thriller",
+    "Romance",
+    "Animation",
+    "Crime",
+    "Fantasy"
+
+];
+
+
+function genreName(g){
+
+    const names={
+
+        Action:"ئاکشن",
+        Adventure:"ماجەرا",
+        Comedy:"کۆمیدی",
+        Drama:"دراما",
+        Horror:"ترسناک",
+        "Sci-Fi":"زانستی-خەیاڵی",
+        Thriller:"تریلەر",
+        Romance:"ڕۆمانسی",
+        Animation:"ئەنیمەیشن",
+        Crime:"تاوان",
+        Fantasy:"خەیاڵی"
+
+    };
+
+    return names[g]||g;
+
+}
+
+
+function image(seed,w,h){
+
+    return `
+    https://picsum.photos/seed/${seed}/${w}/${h}
+    `;
+
+}
+
+
+function createMovie(
+    id,
+    title,
+    genre,
+    year,
+    rating,
+    runtime
+){
+
+    return{
+
+        id,
+        title,
+        genre,
+        year,
+        rating,
+        runtime,
+
+        poster:image(
+            "movie"+id,
+            300,
+            450
+        ),
+
+        backdrop:image(
+            "backdrop"+id,
+            1400,
+            700
+        ),
+
+        description:
+        `${title} چیرۆکێکی سەرنجڕاکێشی جۆری ${genreName(genre)} ـە کە پڕە لە ڕووداو و نهێنی.`,
+
+        director:"ئارام حەسەن",
+
+        cast:
+        "نۆرا ڤیل، سام ئۆرتیز، ڕێزان عەلی",
+
+        language:"ئینگلیزی",
+
+        subtitles:
+        "کوردی، عەرەبی، ئینگلیزی",
+
+        trailer:TRAILER,
+
+        video:VIDEO
+
+    };
+
+}
+
+
+function seed(){
+
+    if(!storage.get("movies")){
+
+        storage.set(
+            "movies",
+            [
+
+                createMovie(
+                    1,
+                    "ئاسۆی سوور",
+                    "Action",
+                    2025,
+                    8.4,
+                    "128 خولەک"
+                ),
+
+                createMovie(
+                    2,
+                    "پڕۆتۆکۆڵی شەو",
+                    "Thriller",
+                    2024,
+                    7.9,
+                    "112 خولەک"
+                ),
+
+                createMovie(
+                    3,
+                    "دەنگەکانی سبەی",
+                    "Sci-Fi",
+                    2026,
+                    8.8,
+                    "141 خولەک"
+                ),
+
+                createMovie(
+                    4,
+                    "کۆتا چرا",
+                    "Fantasy",
+                    2023,
+                    8.1,
+                    "134 خولەک"
+                ),
+
+                createMovie(
+                    5,
+                    "بابەتە خۆشحاڵکەرەکان",
+                    "Comedy",
+                    2025,
+                    7.2,
+                    "98 خولەک"
+                ),
+
+                createMovie(
+                    6,
+                    "ڕێڕەوی بێدەنگ",
+                    "Horror",
+                    2024,
+                    6.9,
+                    "105 خولەک"
+                ),
+
+                createMovie(
+                    7,
+                    "دڵە کاغەزییەکان",
+                    "Romance",
+                    2022,
+                    7.5,
+                    "109 خولەک"
+                ),
+
+                createMovie(
+                    8,
+                    "سێندیکای نێۆن",
+                    "Crime",
+                    2025,
+                    8.6,
+                    "126 خولەک"
+                ),
+
+                createMovie(
+                    9,
+                    "چیرۆکەکانی ئاسمان",
+                    "Animation",
+                    2024,
+                    8.0,
+                    "96 خولەک"
+                ),
+
+                createMovie(
+                    10,
+                    "قەڵەمەی شکاو",
+                    "Adventure",
+                    2023,
+                    7.7,
+                    "118 خولەک"
+                ),
+
+                createMovie(
+                    11,
+                    "سێبەرەکانی عیدەن",
+                    "Drama",
+                    2026,
+                    9.0,
+                    "147 خولەک"
+                ),
+
+                createMovie(
+                    12,
+                    "میریدیانی ئاسن",
+                    "Action",
+                    2026,
+                    7.8,
+                    "122 خولەک"
+                )
+
+            ]
+        );
+
+    }
+
+
+    if(!storage.get("series")){
+
+        storage.set(
+            "series",
+            [
+
+                {
+                    ...createMovie(
+                        101,
+                        "بەندەری تاریک",
+                        "Crime",
+                        2024,
+                        8.7,
+                        "52 خولەک"
+                    ),
+                    seasons:3,
+                    episodes:28
+                },
+
+                {
+                    ...createMovie(
+                        102,
+                        "ئەکادیمیای ڕووناکی ئەستێرە",
+                        "Fantasy",
+                        2025,
+                        8.2,
+                        "45 خولەک"
+                    ),
+                    seasons:2,
+                    episodes:20
+                },
+
+                {
+                    ...createMovie(
+                        103,
+                        "کۆدی سفر",
+                        "Thriller",
+                        2023,
+                        8.5,
+                        "48 خولەک"
+                    ),
+                    seasons:4,
+                    episodes:36
+                },
+
+                {
+                    ...createMovie(
+                        104,
+                        "ماڵەوە دووبارە",
+                        "Comedy",
+                        2022,
+                        7.6,
+                        "24 خولەک"
+                    ),
+                    seasons:5,
+                    episodes:60
+                },
+
+                {
+                    ...createMovie(
+                        105,
+                        "وێستگەی ئۆربیت",
+                        "Sci-Fi",
+                        2026,
+                        8.9,
+                        "55 خولەک"
+                    ),
+                    seasons:1,
+                    episodes:10
+                },
+
+                {
+                    ...createMovie(
+                        106,
+                        "دادگای ڤێلڤێت",
+                        "Drama",
+                        2025,
+                        8.3,
+                        "50 خولەک"
+                    ),
+                    seasons:2,
+                    episodes:16
+                }
+
+            ]
+        );
+
+    }
+
+
+    if(!storage.get("users")){
+
+        storage.set(
+            "users",
+            [
+
+                {
+                    name:"بەڕێوەبەر",
+                    email:"admin@kurdfox.com",
+                    password:"admin123",
+                    role:"admin"
+                },
+
+                {
+                    name:"بەکارهێنەری نموونە",
+                    email:"demo@kurdfox.com",
+                    password:"demo123",
+                    role:"user"
+                }
+
+            ]
+        );
+
+    }
+
+}
+
+
+/* GETTERS */
+
+function movies(){
+
+    return storage.get(
+        "movies",
+        []
+    );
+
+}
+
+function series(){
+
+    return storage.get(
+        "series",
+        []
+    );
+
+}
+
+function allTitles(){
+
+    return [
+        ...movies(),
+        ...series()
+    ];
+
+}
+
+function findTitle(id){
+
+    return allTitles().find(
+        item=>item.id==id
+    );
+
+}
+
+function favorites(){
+
+    return storage.get(
+        "favorites",
+        []
+    );
+
+}
+
+function isFavorite(id){
+
+    return favorites().includes(
+        Number(id)
+    );
+
+}
+
+function currentUser(){
+
+    const email=
+        sessionStorage.getItem("kf_user")||
+        localStorage.getItem("kf_user");
+
+    if(!email)return null;
+
+    return storage.get(
+        "users",
+        []
+    ).find(
+        user=>user.email===email
+    );
+
+}
+
+
+/* TOAST */
+
+function toast(message){
+
+    const box=document.createElement("div");
+
+    box.className="toast";
+
+    box.textContent=message;
+
+    $("#toastBox").appendChild(box);
+
+    setTimeout(
+        ()=>box.remove(),
+        2800
+    );
+
+}
+
+
+/* FAVORITES */
+
+function toggleFavorite(id){
+
+    id=Number(id);
+
+    let list=favorites();
+
+    if(list.includes(id)){
+
+        list=list.filter(
+            x=>x!==id
+        );
+
+        toast(
+            "لە دڵخوازەکان سڕایەوە"
+        );
+
+    }else{
+
+        list.push(id);
+
+        toast(
+            "زیادکرا بۆ دڵخوازەکان ♥"
+        );
+
+    }
+
+    storage.set(
+        "favorites",
+        list
+    );
+
+    render();
+
+}
+
+
+/* CARD */
+
+function card(item){
+
+    return`
+
+    <div class="card">
+
+        <div
+            class="poster"
+            onclick="go('details',${item.id})">
+
+            <img
+                src="${item.poster}"
+                alt="${item.title}">
+
+            <span class="quality">
+
+                ${
+                    item.rating>=8.5
+                    ?
+                    "4K"
+                    :
+                    "HD"
+                }
+
+            </span>
+
+            <button
+                class="favorite ${
+                    isFavorite(item.id)
+                    ?
+                    "active"
+                    :
+                    ""
+                }"
+                onclick="
+                    event.stopPropagation();
+                    toggleFavorite(${item.id})
+                ">
+
+                ♥
+
+            </button>
+
+        </div>
+
+        <h4>
+            ${item.title}
+        </h4>
+
+        <div class="muted">
+
+            ${item.year}
+            ·
+            ${genreName(item.genre)}
+            ·
+            ★${item.rating}
+
+            ${
+                item.seasons
+                ?
+                `
+                <br>
+                ${item.seasons} وەرز
+                ·
+                ${item.episodes} ئەڵقە
+                `
+                :
+                ""
+            }
+
+        </div>
+
+        <button
+            class="btn small"
+            onclick="go('watch',${item.id})">
+
+            ▶ سەیرکردن
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+
+function row(title,list){
+
+    if(!list.length)return"";
+
+    return`
+
+    <section class="section">
+
+        <h2 class="section-title">
+            ${title}
+        </h2>
+
+        <div class="row">
+
+            ${list.map(card).join("")}
+
+        </div>
+
+    </section>
+
+    `;
+
+}
+
+
+function grid(list){
+
+    if(!list.length){
+
+        return`
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🎬
+            </div>
+
+            <h3>
+                هێشتا هیچ شتێک نییە
+            </h3>
+
+            <p>
+                هەڵبژاردەیەکی تر تاقی بکەرەوە.
+            </p>
+
+        </div>
+
+        `;
+
+    }
+
+    return`
+
+    <div class="grid">
+
+        ${list.map(card).join("")}
+
+    </div>
+
+    `;
+
+}
+
+
+/* NAVIGATION */
+
+let currentPage="home";
+let currentArgument=null;
+
+
+function go(page,arg=null){
+
+    currentPage=page;
+    currentArgument=arg;
+
+    $("#links").classList.remove(
+        "open"
+    );
+
+    closeModal();
+
+    render();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function toggleMenu(){
+
+    $("#links").classList.toggle(
+        "open"
+    );
+
+}
+
+
+/* NAV UI */
+
+function navigation(){
+
+    const user=currentUser();
+
+    const links=[
+
+        [
+            "home",
+            "سەرەتا"
+        ],
+
+        [
+            "movies",
+            "فیلمەکان"
+        ],
+
+        [
+            "series",
+            "زنجیرەکان"
+        ],
+
+        [
+            "genres",
+            "جۆرەکان"
+        ],
+
+        [
+            "favorites",
+            `
+            دڵخوازەکان
+
+            <span
+                style="
+                background:var(--red);
+                border-radius:10px;
+                padding:1px 6px;
+                font-size:10px">
+
+                ${favorites().length}
+
+            </span>
+            `
+        ]
+
+    ];
+
+
+    if(
+        user &&
+        user.role==="admin"
+    ){
+
+        links.push([
+            "admin",
+            "بەڕێوەبەر"
+        ]);
+
+    }
+
+
+    $("#links").innerHTML=
+
+        links.map(
+            link=>`
+
+            <a
+                class="${
+                    currentPage===link[0]
+                    ?
+                    "active"
+                    :
+                    ""
+                }"
+                onclick="
+                    go('${link[0]}')
+                ">
+
+                ${link[1]}
+
+            </a>
+
+            `
+        ).join("")
+
+        +
+
+        `
+
+        <a
+            onclick="
+                go('${user?"profile":"login"}')
+            ">
+
+            ${
+                user
+                ?
+                `👤 ${user.name}`
+                :
+                "چوونەژوورەوە"
+            }
+
+        </a>
+
+        `;
+
+
+    $("#mobileNav").innerHTML=[
+
+        [
+            "home",
+            "🏠",
+            "سەرەتا"
+        ],
+
+        [
+            "movies",
+            "🎬",
+            "فیلم"
+        ],
+
+        [
+            "series",
+            "📺",
+            "زنجیرە"
+        ],
+
+        [
+            "favorites",
+            "♥",
+            "دڵخواز"
+        ],
+
+        [
+            user
+            ?
+            "profile"
+            :
+            "login",
+            "👤",
+            user
+            ?
+            "پرۆفایل"
+            :
+            "چوونەژوورەوە"
+        ],
+
+        [
+            "search",
+            "🔍",
+            "گەڕان"
+        ]
+
+    ].map(
+
+        item=>`
+
+        <button
+            class="${
+                currentPage===item[0]
+                ?
+                "active"
+                :
+                ""
+            }"
+            onclick="
+                ${
+                    item[0]==="search"
+                    ?
+                    "openSearch()"
+                    :
+                    `go('${item[0]}')`
+                }
+            ">
+
+            <i>
+                ${item[1]}
+            </i>
+
+            ${item[2]}
+
+        </button>
+
+        `
+
+    ).join("");
+
+}
+
+
+/* RENDER */
+
+function render(){
+
+    const app=$("#app");
+
+    app.innerHTML="";
+
+
+    if(currentPage==="home")
+        homePage(app);
+
+    else if(currentPage==="movies")
+        moviesPage(app);
+
+    else if(currentPage==="series")
+        seriesPage(app);
+
+    else if(currentPage==="genres")
+        genresPage(app);
+
+    else if(currentPage==="favorites")
+        favoritesPage(app);
+
+    else if(currentPage==="details")
+        detailsPage(
+            app,
+            currentArgument
+        );
+
+    else if(currentPage==="watch")
+        watchPage(
+            app,
+            currentArgument
+        );
+
+    else if(currentPage==="login")
+        loginPage(
+            app,
+            currentArgument
+        );
+
+    else if(currentPage==="profile")
+        profilePage(app);
+
+    else if(currentPage==="admin")
+        adminPage(app);
+
+
+    navigation();
+
+}
+
+
+/* HOME */
+
+function homePage(app){
+
+    const list=[
+        ...movies()
+    ].sort(
+        (a,b)=>b.rating-a.rating
+    );
+
+    const hero=list[0];
+
+
+    app.innerHTML=`
+
+    <section
+        class="hero"
+        style="
+        background-image:
+        url('${hero.backdrop}')
+        ">
+
+        <div class="big-search">
+
+            <!-- SEARCH LABEL REMOVED -->
+
+            <div class="search-box">
+
+                <div class="search-icon">
+                    🔍
+                </div>
+
+                <input
+                    id="bigSearchInput"
+                    type="text"
+                    placeholder="ناوی فیلم یان زنجیرە بنووسە…"
+                    oninput="
+                        bigSearch(this.value)
+                    "
+                    onkeydown="
+                        if(event.key==='Enter'){
+                            openSearch(this.value)
+                        }
+                    ">
+
+                <button
+                    class="search-button"
+                    onclick="
+                        openSearch(
+                            $('#bigSearchInput').value
+                        )
+                    ">
+
+                    گەڕان
+
+                </button>
+
+            </div>
+
+            <div
+                id="bigSearchResults"
+                class="search-results">
+            </div>
+
+        </div>
+
+
+        <div class="hero-content">
+
+            <span class="badge">
+                تایبەت
+            </span>
+
+            <h1>
+                ${hero.title}
+            </h1>
+
+            <p class="muted">
+
+                ★ ${hero.rating}
+                ·
+                ${hero.year}
+                ·
+                ${genreName(hero.genre)}
+
+            </p>
+
+            <p style="margin-top:12px">
+
+                ${hero.description}
+
+            </p>
+
+            <div class="buttons">
+
+                <button
+                    class="btn"
+                    onclick="
+                        go('watch',${hero.id})
+                    ">
+
+                    ▶ ئێستا سەیری بکە
+
+                </button>
+
+                <button
+                    class="btn secondary"
+                    onclick="
+                        toggleFavorite(${hero.id})
+                    ">
+
+                    ${
+                        isFavorite(hero.id)
+                        ?
+                        "✓ لە دڵخوازەکانە"
+                        :
+                        "♥ زیادکردن بۆ دڵخوازەکان"
+                    }
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    `;
+
+
+    app.innerHTML+=
+
+        row(
+            "🔥 فیلمە بەناوبانگەکان",
+            list.slice(0,8)
+        )
+
+        +
+
+        row(
+            "نوێترین فیلمەکان",
+            [
+                ...movies()
+            ]
+            .sort(
+                (a,b)=>b.year-a.year
+            )
+            .slice(0,8)
+        )
+
+        +
+
+        row(
+            "زنجیرە بەناوبانگەکان",
+            [
+                ...series()
+            ]
+            .sort(
+                (a,b)=>b.rating-a.rating
+            )
+        )
+
+        +
+
+        row(
+            "پێشنیارکراو بۆ تۆ",
+            [
+                ...allTitles()
+            ]
+            .sort(
+                ()=>Math.random()-.5
+            )
+            .slice(0,8)
+        );
+
+}
+
+
+/* BIG SEARCH */
+
+function bigSearch(value){
+
+    const box=$("#bigSearchResults");
+
+    if(!value.trim()){
+
+        box.classList.remove(
+            "show"
+        );
+
+        box.innerHTML="";
+
+        return;
+
+    }
+
+
+    const q=value
+        .trim()
+        .toLowerCase();
+
+
+    const results=
+        allTitles()
+        .filter(
+            item=>
+            (
+                item.title+
+                " "+
+                item.genre+
+                " "+
+                genreName(item.genre)+
+                " "+
+                item.year
+            )
+            .toLowerCase()
+            .includes(q)
+        )
+        .slice(0,7);
+
+
+    box.classList.add(
+        "show"
+    );
+
+
+    if(!results.length){
+
+        box.innerHTML=`
+
+        <div
+            style="
+            padding:25px;
+            text-align:center;
+            color:var(--muted)">
+
+            🔎 هیچ ئەنجامێک نەدۆزرایەوە
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML=
+        results.map(
+            item=>`
+
+            <div
+                class="search-item"
+                onclick="
+                    go('details',${item.id})
+                ">
+
+                <img
+                    src="${item.poster}"
+                    alt="">
+
+                <div class="search-item-info">
+
+                    <b>
+                        ${item.title}
+                    </b>
+
+                    <span class="muted">
+
+                        ${item.year}
+                        ·
+                        ${genreName(item.genre)}
+                        ·
+                        ★${item.rating}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            `
+        ).join("");
+
+}
+
+
+/* SEARCH MODAL */
+
+function openSearch(value=""){
+
+    showModal(`
+
+        <h2 style="margin-bottom:15px">
+            🔍 گەڕانی KurdFox
+        </h2>
+
+        <p
+            class="muted"
+            style="margin-bottom:15px">
+
+            ناوی فیلم یان زنجیرە بنووسە
+            و بە خێرایی بدۆزەرەوە.
+
+        </p>
+
+        <input
+            id="modalSearch"
+            value="${value}"
+            placeholder="ناوی فیلم یان زنجیرە بنووسە…"
+            style="
+                width:100%;
+                padding:15px;
+                background:rgba(255,255,255,.06);
+                border:1px solid var(--border);
+                border-radius:15px;
+                outline:0;
+                color:#fff;
+            "
+            oninput="
+                modalSearch(this.value)
+            ">
+
+        <div
+            id="modalSearchResults"
+            style="margin-top:15px">
+        </div>
+
+    `);
+
+
+    setTimeout(
+        ()=>$("#modalSearch").focus(),
+        100
+    );
+
+
+    if(value)
+        modalSearch(value);
+
+}
+
+
+function modalSearch(value){
+
+    const box=$("#modalSearchResults");
+
+    if(!value.trim()){
+
+        box.innerHTML="";
+
+        return;
+
+    }
+
+
+    const q=value
+        .toLowerCase()
+        .trim();
+
+
+    const results=
+        allTitles()
+        .filter(
+            item=>
+            (
+                item.title+
+                " "+
+                item.genre+
+                " "+
+                genreName(item.genre)+
+                " "+
+                item.year
+            )
+            .toLowerCase()
+            .includes(q)
+        );
+
+
+    box.innerHTML=
+
+        results.length
+
+        ?
+
+        results.map(
+            item=>`
+
+            <div
+                class="search-item"
+                onclick="
+                    closeModal();
+                    go('details',${item.id})
+                ">
+
+                <img
+                    src="${item.poster}">
+
+                <div class="search-item-info">
+
+                    <b>
+                        ${item.title}
+                    </b>
+
+                    <span class="muted">
+
+                        ${item.year}
+                        ·
+                        ${genreName(item.genre)}
+                        ·
+                        ★${item.rating}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            `
+        ).join("")
+
+        :
+
+        `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🔎
+            </div>
+
+            <h3>
+                هیچ ئەنجامێک نەدۆزرایەوە
+            </h3>
+
+        </div>
+
+        `;
+
+}
+
+
+/* MOVIES */
+
+function moviesPage(app){
+
+    app.innerHTML=`
+
+    <div class="page-header">
+
+        <h1>
+            فیلمەکان
+        </h1>
+
+    </div>
+
+
+    <div class="filters">
+
+        <input
+            id="movieSearch"
+            placeholder="گەڕان بەدوای فیلمەکان…"
+            oninput="
+                filterMovies()
+            ">
+
+
+        <select
+            id="genreFilter"
+            onchange="
+                filterMovies()
+            ">
+
+            <option value="">
+                هەموو جۆرەکان
+            </option>
+
+            ${genres.map(
+                g=>`
+
+                <option value="${g}">
+                    ${genreName(g)}
+                </option>
+
+                `
+            ).join("")}
+
+        </select>
+
+
+        <select
+            id="yearFilter"
+            onchange="
+                filterMovies()
+            ">
+
+            <option value="">
+                هەموو ساڵەکان
+            </option>
+
+            ${[
+                ...new Set(
+                    movies().map(
+                        m=>m.year
+                    )
+                )
+            ]
+            .sort(
+                (a,b)=>b-a
+            )
+            .map(
+                y=>`
+
+                <option value="${y}">
+                    ${y}
+                </option>
+
+                `
+            ).join("")}
+
+        </select>
+
+
+        <button
+            class="btn secondary"
+            onclick="
+                $('#movieSearch').value='';
+                $('#genreFilter').value='';
+                $('#yearFilter').value='';
+                filterMovies();
+            ">
+
+            ڕیسێت
+
+        </button>
+
+    </div>
+
+
+    <div id="movieGrid"></div>
+
+    `;
+
+
+    filterMovies();
+
+}
+
+
+function filterMovies(){
+
+    const q=
+        $("#movieSearch")
+        .value
+        .toLowerCase();
+
+    const genre=
+        $("#genreFilter")
+        .value;
+
+    const year=
+        $("#yearFilter")
+        .value;
+
+
+    const list=
+        movies()
+        .filter(
+            movie=>
+
+            (
+                !q ||
+                movie.title
+                .toLowerCase()
+                .includes(q)
+            )
+
+            &&
+
+            (
+                !genre ||
+                movie.genre===genre
+            )
+
+            &&
+
+            (
+                !year ||
+                movie.year==year
+            )
+        );
+
+
+    $("#movieGrid").innerHTML=
+        grid(list);
+
+}
+
+
+/* SERIES */
+
+function seriesPage(app){
+
+    app.innerHTML=`
+
+    <div class="page-header">
+
+        <h1>
+            زنجیرە تەلەفزیۆنییەکان
+        </h1>
+
+        <p class="muted">
+
+            ${series().length}
+            زنجیرە بەردەستە
+
+        </p>
+
+    </div>
+
+
+    ${grid(series())}
+
+    `;
+
+}
+
+
+/* GENRES */
+
+function genresPage(app){
+
+    app.innerHTML=`
+
+    <div class="page-header">
+
+        <h1>
+            جۆرەکان
+        </h1>
+
+    </div>
+
+
+    <div
+        style="
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        padding:0 4% 25px">
+
+        ${genres.map(
+            genre=>`
+
+            <button
+                class="btn secondary"
+                onclick="
+                    genrePage('${genre}')
+                ">
+
+                ${genreName(genre)}
+
+            </button>
+
+            `
+        ).join("")}
+
+    </div>
+
+
+    <div class="empty">
+
+        <div class="empty-icon">
+            🎭
+        </div>
+
+        <h3>
+            جۆرێک هەڵبژێرە
+        </h3>
+
+        <p>
+            جۆرێک هەڵبژێرە
+            بۆ بینینی فیلمەکانی.
+        </p>
+
+    </div>
+
+    `;
+
+}
+
+
+function genrePage(genre){
+
+    const list=
+        allTitles()
+        .filter(
+            item=>item.genre===genre
+        );
+
+
+    $("#app").innerHTML=`
+
+    <div class="page-header">
+
+        <h1>
+            ${genreName(genre)}
+        </h1>
+
+    </div>
+
+
+    ${grid(list)}
+
+    `;
+
+}
+
+
+/* FAVORITES */
+
+function favoritesPage(app){
+
+    const list=
+        favorites()
+        .map(findTitle)
+        .filter(Boolean);
+
+
+    app.innerHTML=`
+
+    <div class="page-header">
+
+        <h1>
+            دڵخوازەکانم
+        </h1>
+
+        <p class="muted">
+
+            ${list.length}
+            دانە پاشەکەوتکراوە
+
+        </p>
+
+    </div>
+
+
+    ${
+        list.length
+        ?
+        grid(list)
+        :
+        `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ♥
+            </div>
+
+            <h3>
+                لیستەکەت بەتاڵە
+            </h3>
+
+            <p>
+
+                دڵی سەر هەر فیلمێک
+                دابگرە بۆ زیادکردنی
+                بۆ دڵخوازەکان.
+
+            </p>
+
+            <br>
+
+            <button
+                class="btn"
+                onclick="
+                    go('movies')
+                ">
+
+                بینینی فیلمەکان
+
+            </button>
+
+        </div>
+
+        `
+    }
+
+    `;
+
+}
+
+
+/* DETAILS */
+
+function detailsPage(app,id){
+
+    const item=findTitle(id);
+
+    if(!item){
+
+        go("home");
+
+        return;
+
+    }
+
+
+    const related=
+        allTitles()
+        .filter(
+            x=>
+            x.genre===item.genre &&
+            x.id!==item.id
+        )
+        .slice(0,8);
+
+
+    app.innerHTML=`
+
+    <div
+        class="backdrop"
+        style="
+        background-image:
+        linear-gradient(
+            0deg,
+            #09090b,
+            transparent 80%
+        ),
+        url('${item.backdrop}')
+        ">
+    </div>
+
+
+    <div class="details">
+
+        <img
+            class="details-poster"
+            src="${item.poster}"
+            alt="${item.title}">
+
+
+        <div class="details-info">
+
+            <h1>
+                ${item.title}
+            </h1>
+
+
+            <p class="muted">
+
+                ★ ${item.rating}
+                ·
+                ${item.year}
+                ·
+                ${item.runtime}
+                ·
+                ${genreName(item.genre)}
+
+                ${
+                    item.seasons
+                    ?
+                    ` · ${item.seasons} وەرز`
+                    :
+                    ""
+                }
+
+            </p>
+
+
+            <p
+                style="
+                margin-top:15px;
+                line-height:1.9">
+
+                ${item.description}
+
+            </p>
+
+
+            <div class="info-grid">
+
+                <div>
+
+                    <b>
+                        بەڕێوەبەر
+                    </b>
+
+                    ${item.director}
+
+                </div>
+
+
+                <div>
+
+                    <b>
+                        زمان
+                    </b>
+
+                    ${item.language}
+
+                </div>
+
+
+                <div>
+
+                    <b>
+                        ژێرنووس
+                    </b>
+
+                    ${item.subtitles}
+
+                </div>
+
+
+                <div>
+
+                    <b>
+                        ئەکتەرەکان
+                    </b>
+
+                    ${item.cast}
+
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    class="btn"
+                    onclick="
+                        go('watch',${item.id})
+                    ">
+
+                    ▶ ئێستا سەیری بکە
+
+                </button>
+
+
+                <button
+                    class="btn secondary"
+                    onclick="
+                        trailer(${item.id})
+                    ">
+
+                    🎞 پێشبینین
+
+                </button>
+
+
+                <button
+                    class="btn secondary"
+                    onclick="
+                        toggleFavorite(${item.id})
+                    ">
+
+                    ${
+                        isFavorite(item.id)
+                        ?
+                        "✓ لە دڵخوازەکانە"
+                        :
+                        "♥ زیادکردن بۆ دڵخوازەکان"
+                    }
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    ${row(
+        "فیلم و زنجیرەی هاوشێوە",
+        related
+    )}
+
+    `;
+
+}
+
+
+/* TRAILER */
+
+function trailer(id){
+
+    const item=findTitle(id);
+
+    showModal(`
+
+        <h2
+            style="margin-bottom:15px">
+
+            ${item.title}
+            -
+            پێشبینین
+
+        </h2>
+
+
+        <video
+            src="${item.trailer}"
+            controls
+            autoplay
+            playsinline>
+        </video>
+
+
+        <button
+            class="btn secondary"
+            style="margin-top:15px"
+            onclick="
+                closeModal()
+            ">
+
+            داخستن
+
+        </button>
+
+    `);
+
+}
+
+
+/* WATCH */
+
+function watchPage(app,id){
+
+    const item=findTitle(id);
+
+    if(!item){
+
+        go("home");
+
+        return;
+
+    }
+
+
+    app.innerHTML=`
+
+    <div style="height:25px"></div>
+
+
+    <div class="player">
+
+        <video
+            id="videoPlayer"
+            src="${item.video}"
+            playsinline>
+        </video>
+
+
+        <div class="player-controls">
+
+            <button
+                onclick="
+                    togglePlay()
+                "
+                id="playButton">
+
+                ▶
+
+            </button>
+
+
+            <input
+                type="range"
+                id="seek"
+                min="0"
+                max="100"
+                value="0">
+
+
+            <span
+                id="timeLabel"
+                class="muted">
+
+                0:00
+
+            </span>
+
+
+            <input
+                type="range"
+                id="volume"
+                min="0"
+                max="1"
+                step=".05"
+                value="1">
+
+
+            <button
+                onclick="
+                    toggleFullscreen()
+                ">
+
+                ⛶
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div style="padding:0 4%">
+
+        <h1>
+            ${item.title}
+        </h1>
+
+
+        <p class="muted">
+
+            ★ ${item.rating}
+            ·
+            ${item.year}
+            ·
+            ${item.runtime}
+            ·
+            ${genreName(item.genre)}
+
+        </p>
+
+
+        <p
+            style="
+            max-width:800px;
+            margin-top:12px;
+            line-height:1.9">
+
+            ${item.description}
+
+        </p>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn secondary"
+                onclick="
+                    go('details',${item.id})
+                ">
+
+                وردەکاری
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="
+                    toggleFavorite(${item.id})
+                ">
+
+                ♥ دڵخواز
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    ${row(
+        "پێشنیارکراو",
+        allTitles()
+        .filter(
+            x=>x.id!==item.id
+        )
+        .slice(0,8)
+    )}
+
+    `;
+
+
+    setupVideo();
+
+}
+
+
+function setupVideo(){
+
+    const video=$("#videoPlayer");
+
+    if(!video)return;
+
+
+    video.addEventListener(
+        "loadedmetadata",
+        ()=>{
+
+            $("#timeLabel").textContent=
+                formatTime(
+                    video.duration
+                );
+
+        }
+    );
+
+
+    video.addEventListener(
+        "timeupdate",
+        ()=>{
+
+            if(video.duration){
+
+                $("#seek").value=
+                    video.currentTime/
+                    video.duration*
+                    100;
+
+
+                $("#timeLabel").textContent=
+                    formatTime(
+                        video.currentTime
+                    )
+                    +" / "+
+                    formatTime(
+                        video.duration
+                    );
+
+            }
+
+        }
+    );
+
+
+    video.addEventListener(
+        "play",
+        ()=>{
+
+            $("#playButton")
+                .textContent="⏸";
+
+        }
+    );
+
+
+    video.addEventListener(
+        "pause",
+        ()=>{
+
+            $("#playButton")
+                .textContent="▶";
+
+        }
+    );
+
+
+    $("#seek").oninput=function(){
+
+        if(video.duration){
+
+            video.currentTime=
+                this.value/
+                100*
+                video.duration;
+
+        }
+
+    };
+
+
+    $("#volume").oninput=function(){
+
+        video.volume=this.value;
+
+    };
+
+
+    video.onerror=()=>{
+
+        toast(
+            "ڤیدیۆ نەکرا بکرێتەوە. پەیوەندیت بە ئینتەرنێت بپشکنە."
+        );
+
+    };
+
+}
+
+
+function togglePlay(){
+
+    const video=$("#videoPlayer");
+
+    if(!video)return;
+
+
+    if(video.paused)
+        video.play();
+
+    else
+        video.pause();
+
+}
+
+
+function formatTime(seconds){
+
+    if(
+        !seconds ||
+        isNaN(seconds)
+    )
+        return"0:00";
+
+
+    const min=
+        Math.floor(
+            seconds/60
+        );
+
+
+    const sec=
+        Math.floor(
+            seconds%60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    return`${min}:${sec}`;
+
+}
+
+
+function toggleFullscreen(){
+
+    const video=$("#videoPlayer");
+
+    if(!video)return;
+
+
+    if(document.fullscreenElement){
+
+        document.exitFullscreen();
+
+    }
+
+    else if(video.requestFullscreen){
+
+        video.requestFullscreen();
+
+    }
+
+    else{
+
+        toast(
+            "پشتگیری لە شاشەی تەواو نییە"
+        );
+
+    }
+
+}
+
+
+/* LOGIN */
+
+function loginPage(app,mode){
+
+    const register=
+        mode==="register";
+
+
+    app.innerHTML=`
+
+    <div class="auth glass">
+
+        <div
+            class="logo"
+            style="
+            text-align:center;
+            margin-bottom:8px">
+
+            Kurd<b>Fox</b>
+
+        </div>
+
+
+        <p
+            class="muted"
+            style="
+            text-align:center">
+
+            ${
+                register
+                ?
+                "هەژماری خۆڕایی خۆت دروست بکە"
+                :
+                "بەخێربێیتەوە بۆ KurdFox"
+            }
+
+        </p>
+
+
+        <div class="tabs">
+
+            <div
+                class="tab ${
+                    !register
+                    ?
+                    "active"
+                    :
+                    ""
+                }"
+                onclick="
+                    go('login')
+                ">
+
+                چوونەژوورەوە
+
+            </div>
+
+
+            <div
+                class="tab ${
+                    register
+                    ?
+                    "active"
+                    :
+                    ""
+                }"
+                onclick="
+                    go('login','register')
+                ">
+
+                تۆمارکردن
+
+            </div>
+
+        </div>
+
+
+        <div class="form">
+
+            ${
+                register
+                ?
+                `
+                <label>
+                    ناو
+                </label>
+
+                <input
+                    id="registerName"
+                    placeholder="ناوی تۆ">
+                `
+                :
+                ""
+            }
+
+
+            <label>
+                ئیمەیڵ
+            </label>
+
+
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="you@example.com">
+
+
+            <label>
+                وشەی نهێنی
+            </label>
+
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="••••••">
+
+
+            ${
+                register
+                ?
+                ""
+                :
+                `
+                <label>
+
+                    <input
+                        id="remember"
+                        type="checkbox">
+
+                    من لەبیر مەکە
+
+                </label>
+                `
+            }
+
+
+            <button
+                class="btn"
+                onclick="
+                    ${
+                        register
+                        ?
+                        "registerUser()"
+                        :
+                        "loginUser()"
+                    }
+                ">
+
+                ${
+                    register
+                    ?
+                    "دروستکردنی هەژمار"
+                    :
+                    "چوونەژوورەوە"
+                }
+
+            </button>
+
+
+            ${
+                !register
+                ?
+                `
+                <button
+                    class="btn secondary"
+                    onclick="
+                        go('login','register')
+                    ">
+
+                    تۆمارکردن
+
+                </button>
+
+
+                <span
+                    style="
+                    text-align:center;
+                    color:var(--muted);
+                    cursor:pointer"
+                    onclick="
+                        forgotPassword()
+                    ">
+
+                    وشەی نهێنیت لەبیر کردووە؟
+
+                </span>
+
+
+                <p
+                    class="muted"
+                    style="
+                    text-align:center;
+                    font-size:12px">
+
+                    بەڕێوەبەری نموونە:
+                    admin@kurdfox.com
+                    /
+                    admin123
+
+                </p>
+                `
+                :
+                ""
+            }
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+function loginUser(){
+
+    const email=
+        $("#loginEmail")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const password=
+        $("#loginPassword")
+        .value;
+
+
+    const user=
+        storage
+        .get("users",[])
+        .find(
+            item=>
+            item.email===email &&
+            item.password===password
+        );
+
+
+    if(!user){
+
+        toast(
+            "ئیمەیڵ یان وشەی نهێنی هەڵەیە"
+        );
+
+        return;
+
+    }
+
+
+    const remember=
+        $("#remember").checked;
+
+
+    if(remember){
+
+        localStorage.setItem(
+            "kf_user",
+            email
+        );
+
+    }
+
+    else{
+
+        sessionStorage.setItem(
+            "kf_user",
+            email
+        );
+
+    }
+
+
+    toast(
+        "بەخێربێیتەوە، "+
+        user.name
+    );
+
+
+    go("profile");
+
+}
+
+
+function registerUser(){
+
+    const name=
+        $("#registerName")
+        .value
+        .trim();
+
+
+    const email=
+        $("#loginEmail")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const password=
+        $("#loginPassword")
+        .value;
+
+
+    if(!name||!email){
+
+        toast(
+            "ناو و ئیمەیڵ بنووسە"
+        );
+
+        return;
+
+    }
+
+
+    if(password.length<6){
+
+        toast(
+            "وشەی نهێنی دەبێت لانیکەم ٦ پیت بێت"
+        );
+
+        return;
+
+    }
+
+
+    const users=
+        storage.get(
+            "users",
+            []
+        );
+
+
+    if(
+        users.some(
+            user=>user.email===email
+        )
+    ){
+
+        toast(
+            "ئەم ئیمەیڵە پێشتر تۆمارکراوە"
+        );
+
+        return;
+
+    }
+
+
+    users.push({
+
+        name,
+        email,
+        password,
+        role:"user"
+
+    });
+
+
+    storage.set(
+        "users",
+        users
+    );
+
+
+    localStorage.setItem(
+        "kf_user",
+        email
+    );
+
+
+    toast(
+        "هەژمارەکەت دروستکرا!"
+    );
+
+
+    go("profile");
+
+}
+
+
+/* FORGOT */
+
+function forgotPassword(){
+
+    showModal(`
+
+        <h2>
+            گۆڕینی وشەی نهێنی
+        </h2>
+
+
+        <p
+            class="muted"
+            style="
+            margin:10px 0 15px">
+
+            ئیمەیڵەکەت بنووسە
+            بۆ ناردنی پەیامی نموونەیی.
+
+        </p>
+
+
+        <div class="form">
+
+            <input
+                placeholder="you@example.com">
+
+
+            <button
+                class="btn"
+                onclick="
+                    closeModal();
+                    toast(
+                        'بەستەری گۆڕینی وشەی نهێنی نێردرا - نموونە'
+                    )
+                ">
+
+                ناردنی بەستەر
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+/* PROFILE */
+
+function profilePage(app){
+
+    const user=currentUser();
+
+
+    if(!user){
+
+        go("login");
+
+        return;
+
+    }
+
+
+    const favList=
+        favorites()
+        .map(findTitle)
+        .filter(Boolean);
+
+
+    app.innerHTML=`
+
+    <div class="page-header">
+
+        <div
+            class="glass"
+            style="
+            display:flex;
+            align-items:center;
+            gap:18px;
+            flex-wrap:wrap">
+
+            <div class="avatar">
+
+                ${user.name[0]}
+
+            </div>
+
+
+            <div>
+
+                <h1>
+                    ${user.name}
+                </h1>
+
+                <p class="muted">
+
+                    ${user.email}
+
+                    ·
+
+                    ${
+                        user.role==="admin"
+                        ?
+                        "بەڕێوەبەر"
+                        :
+                        "ئەندام"
+                    }
+
+                </p>
+
+            </div>
+
+
+            <div
+                style="
+                margin-right:auto">
+
+                ${
+                    user.role==="admin"
+                    ?
+                    `
+                    <button
+                        class="btn secondary"
+                        onclick="
+                            go('admin')
+                        ">
+
+                        پانێڵی بەڕێوەبەر
+
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+
+                <button
+                    class="btn"
+                    onclick="
+                        logout()
+                    ">
+
+                    چوونەدەرەوە
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    ${row(
+        "فیلمە دڵخوازەکان",
+        favList
+    )}
+
+
+    ${
+        !favList.length
+        ?
+        `
+        <div class="empty">
+
+            <div class="empty-icon">
+                🍿
+            </div>
+
+            <h3>
+                هێشتا هیچ شتێک نییە
+            </h3>
+
+            <p>
+                فیلمێک بۆ دڵخوازەکانت زیاد بکە.
+            </p>
+
+        </div>
+        `
+        :
+        ""
+    }
+
+    `;
+
+}
+
+
+function logout(){
+
+    sessionStorage.removeItem(
+        "kf_user"
+    );
+
+    localStorage.removeItem(
+        "kf_user"
+    );
+
+
+    toast(
+        "بە سەرکەوتوویی چوویتە دەرەوە"
+    );
+
+
+    go("home");
+
+}
+
+
+/* ADMIN */
+
+function adminPage(app){
+
+    const user=currentUser();
+
+
+    if(
+        !user ||
+        user.role!=="admin"
+    ){
+
+        toast(
+            "تەنها بەڕێوەبەر دەتوانێت ئەم بەشە ببینێت"
+        );
+
+        go("login");
+
+        return;
+
+    }
+
+
+    const users=
+        storage.get(
+            "users",
+            []
+        );
+
+
+    app.innerHTML=`
+
+    <div class="page-header">
+
+        <h1>
+            داشبۆردی بەڕێوەبەر
+        </h1>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="glass stat">
+
+            <h2>
+                ${movies().length}
+            </h2>
+
+            <span class="muted">
+                فیلمەکان
+            </span>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <h2>
+                ${series().length}
+            </h2>
+
+            <span class="muted">
+                زنجیرەکان
+            </span>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <h2>
+                ${users.length}
+            </h2>
+
+            <span class="muted">
+                بەکارهێنەران
+            </span>
+
+        </div>
+
+
+        <div class="glass stat">
+
+            <h2>
+                ${favorites().length}
+            </h2>
+
+            <span class="muted">
+                دڵخوازەکان
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-tabs">
+
+        <button
+            class="btn"
+            onclick="
+                adminAddMovie()
+            ">
+
+            + زیادکردنی فیلم
+
+        </button>
+
+
+        <button
+            class="btn secondary"
+            onclick="
+                adminAddSeries()
+            ">
+
+            + زیادکردنی زنجیرە
+
+        </button>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <tr>
+
+                <th>
+                    ناونیشان
+                </th>
+
+                <th>
+                    ساڵ
+                </th>
+
+                <th>
+                    جۆر
+                </th>
+
+                <th>
+                    نمرە
+                </th>
+
+                <th>
+                    کردارەکان
+                </th>
+
+            </tr>
+
+
+            ${
+                allTitles()
+                .map(
+                    item=>`
+
+                    <tr>
+
+                        <td>
+
+                            <img
+                                src="${item.poster}">
+
+                            ${item.title}
+
+                        </td>
+
+
+                        <td>
+                            ${item.year}
+                        </td>
+
+
+                        <td>
+                            ${genreName(item.genre)}
+                        </td>
+
+
+                        <td>
+                            ${item.rating}
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="btn secondary"
+                                onclick="
+                                    editItem(${item.id})
+                                ">
+
+                                دەستکاری
+
+                            </button>
+
+
+                            <button
+                                class="btn"
+                                onclick="
+                                    deleteItem(${item.id})
+                                ">
+
+                                سڕینەوە
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    `
+                )
+                .join("")
+            }
+
+        </table>
+
+    </div>
+
+    `;
+
+}
+
+
+/* ADMIN ADD */
+
+function adminAddMovie(){
+
+    showItemForm(false);
+
+}
+
+
+function adminAddSeries(){
+
+    showItemForm(true);
+
+}
+
+
+function showItemForm(
+    isSeries,
+    id=null
+){
+
+    const old=
+        id
+        ?
+        findTitle(id)
+        :
+        {};
+
+
+    showModal(`
+
+        <h2>
+
+            ${
+                id
+                ?
+                "دەستکاری"
+                :
+                "زیادکردنی"
+            }
+
+            ${isSeries?"زنجیرە":"فیلم"}
+
+        </h2>
+
+
+        <div
+            class="form"
+            style="
+            margin-top:18px">
+
+            <label>
+                ناونیشان
+            </label>
+
+
+            <input
+                id="adminTitle"
+                value="${old.title||""}">
+
+
+            <label>
+                جۆر
+            </label>
+
+
+            <select
+                id="adminGenre">
+
+                ${genres.map(
+                    g=>`
+
+                    <option
+                        value="${g}"
+                        ${
+                            old.genre===g
+                            ?
+                            "selected"
+                            :
+                            ""
+                        }>
+
+                        ${genreName(g)}
+
+                    </option>
+
+                    `
+                ).join("")}
+
+            </select>
+
+
+            <label>
+                ساڵ
+            </label>
+
+
+            <input
+                id="adminYear"
+                type="number"
+                value="${old.year||2026}">
+
+
+            <label>
+                نمرە
+            </label>
+
+
+            <input
+                id="adminRating"
+                type="number"
+                min="0"
+                max="10"
+                step=".1"
+                value="${old.rating||8}">
+
+
+            <label>
+                بەستەری پۆستەر
+            </label>
+
+
+            <input
+                id="adminPoster"
+                value="${old.poster||""}">
+
+
+            <label>
+                وەسف
+            </label>
+
+
+            <textarea
+                id="adminDescription"
+                rows="4">${old.description||""}</textarea>
+
+
+            <button
+                class="btn"
+                onclick="
+                    saveAdminItem(
+                        ${isSeries},
+                        ${id||0}
+                    )
+                ">
+
+                ${
+                    id
+                    ?
+                    "پاشەکەوتکردنی گۆڕانکاری"
+                    :
+                    "پاشەکەوتکردن"
+                }
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="
+                    closeModal()
+                ">
+
+                هەڵوەشاندنەوە
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+function saveAdminItem(
+    isSeries,
+    id
+){
+
+    const title=
+        $("#adminTitle")
+        .value
+        .trim();
+
+
+    const genre=
+        $("#adminGenre")
+        .value;
+
+
+    const year=
+        Number(
+            $("#adminYear").value
+        );
+
+
+    const rating=
+        Number(
+            $("#adminRating").value
+        );
+
+
+    const poster=
+        $("#adminPoster")
+        .value
+        .trim();
+
+
+    const description=
+        $("#adminDescription")
+        .value
+        .trim();
+
+
+    if(
+        !title ||
+        !year ||
+        isNaN(rating)
+    ){
+
+        toast(
+            "ناونیشان، ساڵ و نمرە پێویستن"
+        );
+
+        return;
+
+    }
+
+
+    const list=
+        isSeries
+        ?
+        series()
+        :
+        movies();
+
+
+    if(id){
+
+        const item=
+            list.find(
+                x=>x.id==id
+            );
+
+
+        if(item){
+
+            item.title=title;
+            item.genre=genre;
+            item.year=year;
+            item.rating=rating;
+            item.description=
+                description;
+
+
+            if(poster)
+                item.poster=poster;
+
+        }
+
+    }
+
+    else{
+
+        const item=
+            createMovie(
+                Date.now(),
+                title,
+                genre,
+                year,
+                rating,
+                "120 خولەک"
+            );
+
+
+        item.description=
+            description ||
+            item.description;
+
+
+        if(poster)
+            item.poster=poster;
+
+
+        list.push(item);
+
+    }
+
+
+    storage.set(
+        isSeries
+        ?
+        "series"
+        :
+        "movies",
+        list
+    );
+
+
+    closeModal();
+
+
+    toast(
+        id
+        ?
+        "گۆڕانکارییەکان پاشەکەوتکران"
+        :
+        "ناوەڕۆکەکە زیادکرا"
+    );
+
+
+    render();
+
+}
+
+
+/* EDIT / DELETE */
+
+function editItem(id){
+
+    const isSeries=
+        series().some(
+            x=>x.id==id
+        );
+
+
+    showItemForm(
+        isSeries,
+        id
+    );
+
+}
+
+
+function deleteItem(id){
+
+    const item=
+        findTitle(id);
+
+
+    if(!item)return;
+
+
+    showModal(`
+
+        <h2>
+            سڕینەوەی "${item.title}"؟
+        </h2>
+
+
+        <p
+            class="muted"
+            style="
+            margin:12px 0">
+
+            ئەم کردارە ناگەڕێتەوە.
+
+        </p>
+
+
+        <div class="buttons">
+
+            <button
+                class="btn"
+                onclick="
+                    confirmDelete(${id})
+                ">
+
+                بەڵێ، بیسڕەوە
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="
+                    closeModal()
+                ">
+
+                هەڵوەشاندنەوە
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+function confirmDelete(id){
+
+    let list=
+        movies()
+        .filter(
+            x=>x.id!=id
+        );
+
+
+    storage.set(
+        "movies",
+        list
+    );
+
+
+    list=
+        series()
+        .filter(
+            x=>x.id!=id
+        );
+
+
+    storage.set(
+        "series",
+        list
+    );
+
+
+    storage.set(
+        "favorites",
+        favorites()
+        .filter(
+            x=>x!=id
+        )
+    );
+
+
+    closeModal();
+
+
+    toast(
+        "بە سەرکەوتوویی سڕایەوە"
+    );
+
+
+    render();
+
+}
+
+
+/* MODAL */
+
+function showModal(html){
+
+    $("#modalContent")
+        .innerHTML=html;
+
+
+    $("#modalOverlay")
+        .classList
+        .add("show");
+
+}
+
+
+function closeModal(){
+
+    $("#modalOverlay")
+        .classList
+        .remove("show");
+
+}
+
+
+function outsideModal(event){
+
+    if(
+        event.target===
+        $("#modalOverlay")
+    ){
+
+        closeModal();
+
+    }
+
+}
+
+
+function info(title){
+
+    showModal(`
+
+        <h2>
+            ${title}
+        </h2>
+
+
+        <p
+            style="
+            color:#ccc;
+            line-height:2;
+            margin:15px 0">
+
+            KurdFox پلاتفۆرمێکی نموونەییە
+            بۆ سەیرکردنی فیلم و زنجیرە.
+            ئەم وێبسایتە بە HTML و CSS و
+            JavaScript دروستکراوە.
+
+        </p>
+
+
+        <button
+            class="btn"
+            onclick="
+                closeModal()
+            ">
+
+            داخستن
+
+        </button>
+
+    `);
+
+}
+
+
+/* SCROLL */
+
+window.addEventListener(
+    "scroll",
+    ()=>{
+
+        $("#topBtn").style.display=
+            window.scrollY>400
+            ?
+            "block"
+            :
+            "none";
+
+    }
+);
+
+
+/* ESCAPE */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key==="Escape")
+            closeModal();
+
+    }
+);
+
+
+/* START */
+
+seed();
+
+render();
+
+
+setTimeout(
+    ()=>{
+
+        $("#loader").style.opacity="0";
+
+
+        setTimeout(
+            ()=>$("#loader").remove(),
+            500
+        );
+
+    },
+    700
+);
+
+</script>
+
+</body>
+</html>
